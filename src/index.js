@@ -16,88 +16,69 @@ function capture(thunk) {
 
 export default function reactive(Component) {
 
+  let ReactiveComponent;
   if (Component.prototype.isReactComponent) {
-
-    return class extends Component {
-
-      static displayName = Component.displayName || Component.name;
-
-      constructor(props, context) {
-        super(props, context);
-        this.reactor = null;
-        this.forceUpdateBound = this.forceUpdate.bind(this, undefined);
-      }
-
-      render() {
-        let element;
-        let refs = capture(() => {
-          element = super.render();
-        });
-        if (this.reactor === null) {
-          this.reactor = new Reactor(refs, this.forceUpdateBound);
-        } else {
-          // reactor is stopped, so it is (?) safe to do so
-          this.reactor._parent = refs;
-        }
-        this.reactor.start();
-        return element;
-      }
-
-      componentWillUpdate(...args) {
-        this.reactor.stop();
-        if (super.componentWillUpdate) {
-          super.componentWillUpdate(...args);
-        }
-      }
-
-      componentWillUnmount(...args) {
-        this.reactor.stop();
-        if (super.componentWillUnmount) {
-          super.componentWillUnmount(...args);
-        }
-      }
-
-    };
-
+    ReactiveComponent = decorate(Component, self =>
+      Component.prototype.render.call(self));
   } else {
-
-    return class extends React.Component {
-
-      static displayName = Component.displayName || Component.name;
-      static propTypes = Component.propTypes;
-      static contextTypes = Component.contextTypes;
-      static defaultProps = Component.defaultProps;
-
-      constructor(props) {
-        super(props);
-        this.reactor = null;
-        this.forceUpdateBound = this.forceUpdate.bind(this, undefined);
-      }
-
-      render() {
-        let element;
-        let refs = capture(() => {
-          element = Component(this.props, this.context);
-        });
-        if (this.reactor === null) {
-          this.reactor = new Reactor(refs, this.forceUpdateBound);
-        } else {
-          // reactor is stopped, so it is (?) safe to do so
-          this.reactor._parent = refs;
-        }
-        this.reactor.start();
-        return element;
-      }
-
-      componentWillUpdate() {
-        this.reactor.stop();
-      }
-
-      componentWillUnmount() {
-        this.reactor.stop();
-      }
-
-    };
+    ReactiveComponent =  decorate(React.Component, self =>
+      Component(self.props, self.context));
   }
+
+  ReactiveComponent.displayName = Component.displayName || Component.name;
+  ReactiveComponent.propTypes = Component.propTypes;
+  ReactiveComponent.contextTypes = Component.contextTypes;
+  ReactiveComponent.defaultProps = Component.defaultProps;
+
+  return ReactiveComponent;
 }
 
+function decorate(Base, render) {
+  return class extends Base {
+
+    constructor(props, context) {
+      super(props, context);
+      this._reactor = null;
+    }
+
+    render() {
+      let element;
+      // collect dependencies while running render
+      let dependencies = capture(() => {
+        element = render(this);
+      });
+
+      if (this._reactor === null) {
+        this._reactor = new Reactor(dependencies, this._react);
+      } else {
+        // _reactor is stopped, so it is (?) safe to do so
+        this._reactor._parent = dependencies;
+      }
+
+      this._reactor.start();
+
+      return element;
+    }
+
+    componentWillUpdate(...args) {
+      this._reactor.stop();
+      if (super.componentWillUpdate) {
+        super.componentWillUpdate(...args);
+      }
+    }
+
+    componentWillUnmount(...args) {
+      this._reactor.stop();
+      this._reactor = null;
+      if (super.componentWillUnmount) {
+        super.componentWillUnmount(...args);
+      }
+    }
+
+    _react = () => {
+      this._reactor.stop();
+      this.forceUpdate();
+    };
+
+  };
+}
