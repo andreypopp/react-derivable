@@ -51,14 +51,14 @@ let ReactiveHello = reactive(Hello)
 Or you can define reactive components right away:
 
 ```js
-let Hello = reactive(props =>
+let ReactiveHello = reactive(props =>
   <div>{props.message.get()}</div>)
 ```
 
 Or using ES2015 class syntax:
 
 ```js
-let Hello = reactive(
+let ReactiveHello = reactive(
   class extends React.Component {
 
     render() {
