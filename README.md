@@ -1,5 +1,8 @@
 # React Reactive
 
+[![Travis build status](https://img.shields.io/travis/andreypopp/react-reactive/master.svg)](https://travis-ci.org/andreypopp/react-reactive)
+[![npm](https://img.shields.io/npm/v/react-reactive.svg)](https://www.npmjs.com/package/react-reactive)
+
 React Reactive allows to define [React][] components which re-render when reactive
 values (defined in terms of [derivable][]) used in `render()` change.
 
