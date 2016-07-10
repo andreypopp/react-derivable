@@ -1,7 +1,7 @@
 # React Reactive
 
 React Reactive allows to define [React][] components which re-render when reactive
-values (defined in terms of [derivable][])_ used in `render()` change.
+values (defined in terms of [derivable][]) used in `render()` change.
 
 ## Installation
 
