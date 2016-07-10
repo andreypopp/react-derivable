@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {atom} from 'derivable';
 
-import reactive from '../index';
+import {reactive} from '../index';
 
 describe('react-forms/reactive', function() {
 

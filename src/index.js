@@ -7,14 +7,15 @@ import React from 'react';
 import {
   __Reactor as Reactor,
   captureDereferences,
-  struct
+  struct,
+  isDerivable
 } from 'derivable';
 
 function capture(thunk) {
   return struct(captureDereferences(thunk));
 }
 
-export default function reactive(Component) {
+export function reactive(Component) {
 
   let ReactiveComponent;
   if (Component.prototype.isReactComponent) {
@@ -82,3 +83,11 @@ function decorate(Base, render) {
 
   };
 }
+
+export let View = reactive(props =>
+  isDerivable(props.children)
+    ? React.Children.only(props.children.get())
+    : props.children()
+);
+
+export default reactive;
