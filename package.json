@@ -33,7 +33,6 @@
     "eslint": "^3.0.1",
     "eslint-config-prometheusresearch": "^0.2.0",
     "jsdom": "^9.4.1",
-    "microtime": "^2.1.1",
     "mocha": "^2.5.3",
     "power-assert": "^1.4.1",
     "react": "^15.2.1",
