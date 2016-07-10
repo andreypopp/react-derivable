@@ -42,9 +42,6 @@ describe('react-forms/reactive', function() {
       return <div title={title} x={x && x.get()}>{message.get()}</div>;
     }
 
-    let ReactiveClassBased = reactive(ClassBased);
-    let ReactiveFunctional = reactive(Functional);
-
     it('preserves displayName for class based components', function() {
       class X extends React.Component {
         render() {
@@ -133,7 +130,10 @@ describe('react-forms/reactive', function() {
       assert(reactive(X).defaultProps.x === 42);
     });
 
-    [ReactiveClassBased, ReactiveFunctional].forEach(function(ReactiveHello) {
+    [
+      reactive(ClassBased),
+      reactive(Functional),
+    ].forEach(function(ReactiveHello) {
 
       describe(ReactiveHello.displayName || ReactiveHello.name, function() {
 
@@ -254,6 +254,19 @@ describe('react-forms/reactive', function() {
 
           assert(renderCount === 2);
           assert(markup(root) === '<div title="ok" x="oops">!!!</div>');
+        });
+
+        it('does not update if values does not change', function() {
+          let message = atom('World');
+          ReactDOM.render(<ReactiveHello message={message} />, root);
+
+          assert.equal(renderCount, 1);
+          assert.equal(markup(root), '<div>World</div>');
+
+          message.set('World');
+
+          assert.equal(renderCount, 1);
+          assert.equal(markup(root), '<div>World</div>');
         });
 
         it('does not update after unmount', function() {

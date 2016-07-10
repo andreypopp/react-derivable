@@ -4,7 +4,11 @@
  */
 
 import React from 'react';
-import {captureDereferences, struct, atom} from 'derivable';
+import {
+  __Reactor as Reactor,
+  captureDereferences,
+  struct
+} from 'derivable';
 
 function capture(thunk) {
   return struct(captureDereferences(thunk));
@@ -20,35 +24,34 @@ export default function reactive(Component) {
 
       constructor(props, context) {
         super(props, context);
-        this.disactivate = atom(false);
         this.reactor = null;
+        this.forceUpdateBound = this.forceUpdate.bind(this, undefined);
       }
 
       render() {
-        this.disactivate.set(false);
         let element;
-        this.reactor = capture(() => {
+        let refs = capture(() => {
           element = super.render();
         });
-        this.reactor.react(() => {
-          this.forceUpdate();
-        }, {
-          once: true,
-          skipFirst: true,
-          until: this.disactivate,
-        });
+        if (this.reactor === null) {
+          this.reactor = new Reactor(refs, this.forceUpdateBound);
+        } else {
+          // reactor is stopped, so it is (?) safe to do so
+          this.reactor._parent = refs;
+        }
+        this.reactor.start();
         return element;
       }
 
       componentWillUpdate(...args) {
-        this.disactivate.set(true);
+        this.reactor.stop();
         if (super.componentWillUpdate) {
           super.componentWillUpdate(...args);
         }
       }
 
       componentWillUnmount(...args) {
-        this.disactivate.set(true);
+        this.reactor.stop();
         if (super.componentWillUnmount) {
           super.componentWillUnmount(...args);
         }
@@ -67,33 +70,34 @@ export default function reactive(Component) {
 
       constructor(props) {
         super(props);
-        this.disactivate = null;
         this.reactor = null;
         this.forceUpdateBound = this.forceUpdate.bind(this, undefined);
       }
 
       render() {
         let element;
-        this.disactivate = atom(false);
-        this.reactor = capture(() => {
+        let refs = capture(() => {
           element = Component(this.props, this.context);
         });
-        this.reactor.react(this.forceUpdateBound, {
-          once: true,
-          skipFirst: true,
-          until: this.disactivate,
-        });
+        if (this.reactor === null) {
+          this.reactor = new Reactor(refs, this.forceUpdateBound);
+        } else {
+          // reactor is stopped, so it is (?) safe to do so
+          this.reactor._parent = refs;
+        }
+        this.reactor.start();
         return element;
       }
 
       componentWillUpdate() {
-        this.disactivate.set(true);
+        this.reactor.stop();
       }
 
       componentWillUnmount() {
-        this.disactivate.set(true);
+        this.reactor.stop();
       }
 
     };
   }
 }
+

@@ -10,6 +10,9 @@ MOCHA_OPTS    = -R dot --require ./src/__tests__/setup.js
 build::
 	@$(MAKE) -j 8 $(LIB)
 
+benchmark:
+	@node ./bench.js
+
 lint::
 	@$(BIN)/eslint src
 

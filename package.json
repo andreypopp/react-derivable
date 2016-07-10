@@ -21,21 +21,25 @@
   },
   "homepage": "https://github.com/andreypopp/react-reactive#readme",
   "peerDependencies": {
-    "derivable": "^1.0.0-beta",
+    "derivable": "1.0.0-beta9",
     "react": ">= 0.14.0 < 16.0.0"
   },
   "devDependencies": {
-    "derivable": "^1.0.0-beta",
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
     "babel-preset-prometheusresearch": "^0.1.0",
+    "benchmark": "^2.1.0",
+    "derivable": "1.0.0-beta9",
     "eslint": "^3.0.1",
     "eslint-config-prometheusresearch": "^0.2.0",
     "jsdom": "^9.4.1",
+    "microtime": "^2.1.1",
+    "mobx": "^2.3.5",
+    "mobx-react": "^3.4.0",
     "mocha": "^2.5.3",
     "power-assert": "^1.4.1",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
     "sinon": "^1.17.4"
   }
 }
