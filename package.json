@@ -1,0 +1,41 @@
+{
+  "name": "react-reactive",
+  "version": "0.1.0",
+  "description": "Make React component react on changes in referened derivable values",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreypopp/react-reactive.git"
+  },
+  "keywords": [
+    "react",
+    "derivable"
+  ],
+  "author": "Andrey Popp <8mayday@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andreypopp/react-reactive/issues"
+  },
+  "homepage": "https://github.com/andreypopp/react-reactive#readme",
+  "peerDependencies": {
+    "derivable": "^1.0.0-beta",
+    "react": ">= 0.14.0 < 16.0.0"
+  },
+  "devDependencies": {
+    "derivable": "^1.0.0-beta",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-preset-prometheusresearch": "^0.1.0",
+    "eslint": "^3.0.1",
+    "eslint-config-prometheusresearch": "^0.2.0",
+    "jsdom": "^9.4.1",
+    "mocha": "^2.5.3",
+    "power-assert": "^1.4.1",
+    "sinon": "^1.17.4"
+  }
+}
