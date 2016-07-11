@@ -51,26 +51,6 @@ import reactive from 'react-reactive'
 let ReactiveHello = reactive(Hello)
 ```
 
-Or you can define reactive components right away:
-
-```js
-let ReactiveHello = reactive(props =>
-  <div>{props.message.get()}</div>)
-```
-
-Or using ES2015 class syntax:
-
-```js
-let ReactiveHello = reactive(
-  class extends React.Component {
-
-    render() {
-      return <div>{this.props.message.get()}</div>
-    }
-  }
-)
-```
-
 ##### Render into DOM
 
 Render `<ReactiveHello />` into DOM and pass it a reactive `message` value:
@@ -99,12 +79,42 @@ reactive component out of original one.
 Reactive components re-render when one of the reactive values references from
 within `render()` change.
 
+```js
+import React from 'react'
+import {reactive} from 'react-reactive'
+
+let Reactive = reactive(props =>
+  <div>{props.message.get()}</div>)
+
+let ReactiveClassBased = reactive(class extends React.Component {
+
+  render() {
+    return <div>{this.props.message.get()}</div>
+  }
+})
+```
+
 ### `pure(Component)`
 
 Also makes component reactive but also define `shouldComponentUpdate` which
 compares `props` and `state` with respect to reactive values.
 
 That allows to get rid of unnecessary re-renders.
+
+```js
+import React from 'react'
+import {pure} from 'react-reactive'
+
+let Reactive = pure(props =>
+  <div>{props.message.get()}</div>)
+
+let ReactiveClassBased = pure(class extends React.Component {
+
+  render() {
+    return <div>{this.props.message.get()}</div>
+  }
+})
+```
 
 ### `pure(Component).withEquality(eq)`
 
