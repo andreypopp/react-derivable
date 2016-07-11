@@ -114,8 +114,8 @@ let ReactiveClassBased = reactive(class extends React.Component {
 
 ### `pure(Component)`
 
-Also makes component reactive but also define `shouldComponentUpdate` which
-compares `props` and `state` with respect to reactive values.
+Makes component reactive and defines `shouldComponentUpdate` which compares
+`props` and `state` with respect to reactive values.
 
 That allows to get rid of unnecessary re-renders.
 
