@@ -6,6 +6,24 @@
 React Reactive allows to define [React][] components which re-render when reactive
 values (defined in terms of [derivable][]) used in `render()` change.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Installation](#installation)
+- [Usage](#usage)
+      - [Model application state](#model-application-state)
+      - [Define UI](#define-ui)
+      - [Make UI reactive](#make-ui-reactive)
+      - [Render into DOM](#render-into-dom)
+      - [Update model](#update-model)
+- [API](#api)
+  - [`reactive(Component)`](#reactivecomponent)
+  - [`pure(Component)`](#purecomponent)
+  - [`pure(Component).withEquality(eq)`](#purecomponentwithequalityeq)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Installation
 
 Install from npm (`react` and `derivable` are peer dependencies and must be
