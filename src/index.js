@@ -161,7 +161,7 @@ function makePureComponent(ReactiveBase, render = null) {
       // On each equivalent (but not equal!) reactive value we receive a
       // call back which allows us to populate new list of dependencies and then
       // in case we don't do a real re-render — update what we are listening
-      // for.
+      // to.
       //
       // Why it is safe not to re-render on equivalent but not equal reactive
       // values? Because observation of both equivalent reactive values leads to
