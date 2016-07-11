@@ -84,10 +84,4 @@ function decorate(Base, render) {
   };
 }
 
-export let View = reactive(props =>
-  isDerivable(props.children)
-    ? React.Children.only(props.children.get())
-    : props.children()
-);
-
 export default reactive;
