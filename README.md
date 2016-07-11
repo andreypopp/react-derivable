@@ -19,7 +19,7 @@ installed for an application too):
 
 ## Usage
 
-###### Model application state
+##### Model application state
 
 Define your application state in terms of [derivable][]:
 
@@ -29,7 +29,7 @@ import {atom} from 'derivable'
 let message = atom('Hello, World!')
 ```
 
-###### Define UI
+##### Define UI
 
 Define a React component which accepts and uses in render a reactive value
 `message`:
@@ -41,7 +41,7 @@ let Hello = props =>
   <div>{props.message.get()}</div>
 ```
 
-###### Make UI reactive
+##### Make UI reactive
 
 Now produce a new reactive component using higher-order `reactive` component
 
@@ -71,7 +71,7 @@ let ReactiveHello = reactive(
 )
 ```
 
-###### Render into DOM
+##### Render into DOM
 
 Render `<ReactiveHello />` into DOM and pass it a reactive `message` value:
 
@@ -81,7 +81,7 @@ import ReactDOM from 'react-dom'
 ReactDOM.render(<Hello message={message} />, ...)
 ```
 
-###### Update model
+##### Update model
 
 Each time reactive value updates - component gets rerendered:
 
@@ -89,5 +89,38 @@ Each time reactive value updates - component gets rerendered:
 message.set('Works!')
 ```
 
+## API
+
+### `reactive(Component)`
+
+As shown in the usage section above `reactive(Component)` decorator produces a
+reactive component out of original one.
+
+Reactive components re-render when one of the reactive values references from
+within `render()` change.
+
+### `pure(Component)`
+
+Also makes component reactive but also define `shouldComponentUpdate` which
+compares `props` and `state` with respect to reactive values.
+
+That allows to get rid of unnecessary re-renders.
+
+### `pure(Component).withEquality(eq)`
+
+Same as using `pure(Component)` but with a custom equality function which is
+used to compare props/state and reactive values.
+
+Useful when using with libraries like [Immutable.js][immutable] which provide
+its equality definition:
+
+```js
+import * as Immutable from 'immutable'
+import {pure} from 'react-reactive'
+
+let Reactive = pure(Component).withEquality(Immutable.is)
+```
+
 [React]: https://reactjs.org
 [derivable]: https://github.com/ds300/derivablejs
+[immutable]: https://github.com/facebook/immutable-js
