@@ -63,7 +63,7 @@ Render `<ReactiveHello />` into DOM and pass it a reactive `message` value:
 ```js
 import ReactDOM from 'react-dom'
 
-ReactDOM.render(<Hello message={message} />, ...)
+ReactDOM.render(<ReactiveHello message={message} />, ...)
 ```
 
 Each time reactive value updates - component gets rerendered:
