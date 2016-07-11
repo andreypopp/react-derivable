@@ -12,11 +12,6 @@ values (defined in terms of [derivable][]) used in `render()` change.
 
 - [Installation](#installation)
 - [Usage](#usage)
-      - [Model application state](#model-application-state)
-      - [Define UI](#define-ui)
-      - [Make UI reactive](#make-ui-reactive)
-      - [Render into DOM](#render-into-dom)
-      - [Update model](#update-model)
 - [API](#api)
   - [`reactive(Component)`](#reactivecomponent)
   - [`pure(Component)`](#purecomponent)
