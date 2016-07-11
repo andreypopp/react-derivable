@@ -5,6 +5,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {atom} from 'derivable';
+import * as Immutable from 'immutable';
 
 import {shallowEqual, reactive, pure} from '../index';
 
@@ -35,11 +36,11 @@ describe('react-reactive', function() {
       let a1 = atom(1);
       let a2 = atom(1);
       let onDerivableReplace = sinon.spy();
-      assert(shallowEqual({a: a1}, {a: a2}, onDerivableReplace));
+      assert(shallowEqual({a: a1}, {a: a2}, undefined, onDerivableReplace));
       assert.equal(onDerivableReplace.callCount, 1);
       assert.deepEqual(onDerivableReplace.firstCall.args, [a1, a2]);
       a2.set(2);
-      assert(!shallowEqual({a: a1}, {a: a2}), onDerivableReplace);
+      assert(!shallowEqual({a: a1}, {a: a2}), undefined, onDerivableReplace);
       assert.equal(onDerivableReplace.callCount, 1);
     });
 
@@ -48,7 +49,7 @@ describe('react-reactive', function() {
       let a1 = atom(1).withEquality(almostEq);
       let a2 = atom(1);
       let onDerivableReplace = sinon.spy();
-      assert(!shallowEqual({a: a1}, {a: a2}, onDerivableReplace));
+      assert(!shallowEqual({a: a1}, {a: a2}, undefined, onDerivableReplace));
       assert.equal(onDerivableReplace.callCount, 0);
     });
 
@@ -57,15 +58,15 @@ describe('react-reactive', function() {
       let a1 = atom(1).withEquality(almostEq);
       let a2 = atom(1).withEquality(almostEq);
       let onDerivableReplace = sinon.spy();
-      assert(shallowEqual({a: a1}, {a: a2}, onDerivableReplace));
+      assert(shallowEqual({a: a1}, {a: a2}, undefined, onDerivableReplace));
       assert.equal(onDerivableReplace.callCount, 1);
       assert.deepEqual(onDerivableReplace.firstCall.args, [a1, a2]);
       a2.set(2);
-      assert(shallowEqual({a: a1}, {a: a2}, onDerivableReplace));
+      assert(shallowEqual({a: a1}, {a: a2}, undefined, onDerivableReplace));
       assert.equal(onDerivableReplace.callCount, 2);
       assert.deepEqual(onDerivableReplace.secondCall.args, [a1, a2]);
       a2.set(20);
-      assert(!shallowEqual({a: a1}, {a: a2}, onDerivableReplace));
+      assert(!shallowEqual({a: a1}, {a: a2}, undefined, onDerivableReplace));
       assert.equal(onDerivableReplace.callCount, 2);
     });
 
@@ -378,6 +379,105 @@ describe('react-reactive', function() {
             assert(markup(root) === '<div title="ok">World</div>');
 
             ReactDOM.render(<Component message={message} title="ok" />, root);
+
+            assert.equal(renderCount, 1);
+            assert(markup(root) === '<div title="ok">World</div>');
+
+          });
+
+        });
+      });
+
+    });
+
+    describe('pure(Component) w/ custom equality', function() {
+
+      makeComponentDecoratorTestSuite(
+        Component => pure(Component).withEquality(Immutable.is));
+
+      class ClassBased extends React.Component {
+        render() {
+          let {title, message, x} = this.props;
+          renderCount += 1;
+          return (
+            <div
+              title={title ? title.get('a') : undefined}
+              x={x && x.get()}>
+              {message.get().get('a')}
+            </div>
+          );
+        }
+      }
+
+      function Functional({title, message, x}) {
+        renderCount += 1;
+        return (
+          <div
+            title={title ? title.get('a') : undefined}
+            x={x && x.get()}>
+            {message.get().get('a')}
+          </div>
+        );
+      }
+
+      [
+        pure(ClassBased).withEquality(Immutable.is),
+        pure(Functional).withEquality(Immutable.is),
+      ].forEach(function(Component) {
+
+        describe(Component.displayName || Component.name, function() {
+
+          it('ignores reactive prop change (same value)', function() {
+            let message = atom(Immutable.Map().set('a', 'World'));
+            ReactDOM.render(<Component message={message} />, root);
+
+            assert.equal(renderCount, 1);
+            assert(markup(root) === '<div>World</div>');
+
+            let nextMessage = atom(Immutable.Map().set('a', 'World'));
+            ReactDOM.render(<Component message={nextMessage} />, root);
+
+            assert.equal(renderCount, 1);
+            assert(markup(root) === '<div>World</div>');
+
+          });
+
+          it('ignores reactive prop change (same value) but re-subscribes', function() {
+            let message = atom(Immutable.Map().set('a', 'World'));
+            ReactDOM.render(<Component message={message} />, root);
+
+            assert.equal(renderCount, 1);
+            assert(markup(root) === '<div>World</div>');
+
+            let nextMessage = atom(Immutable.Map().set('a', 'World'));
+            ReactDOM.render(<Component message={nextMessage} />, root);
+
+            assert.equal(renderCount, 1);
+            assert(markup(root) === '<div>World</div>');
+
+            message.swap(m => m.set('a', 'x'));
+            assert.equal(renderCount, 1);
+            assert(markup(root) === '<div>World</div>');
+
+            nextMessage.swap(m => m.set('a', 'y'));
+            assert.equal(renderCount, 2);
+            assert(markup(root) === '<div>y</div>');
+
+            nextMessage.swap(m => m.set('a', 'z'));
+            assert.equal(renderCount, 3);
+            assert(markup(root) === '<div>z</div>');
+          });
+
+          it('ignores regular prop change (same prop value)', function() {
+            let message = atom(Immutable.Map().set('a', 'World'));
+            let title = Immutable.Map().set('a', 'ok');
+            ReactDOM.render(<Component message={message} title={title} />, root);
+
+            assert.equal(renderCount, 1);
+            assert(markup(root) === '<div title="ok">World</div>');
+
+            let nextTitle = Immutable.Map().set('a', 'ok');
+            ReactDOM.render(<Component message={message} title={nextTitle} />, root);
 
             assert.equal(renderCount, 1);
             assert(markup(root) === '<div title="ok">World</div>');

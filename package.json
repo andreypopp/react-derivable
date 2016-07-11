@@ -32,6 +32,7 @@
     "derivable": "1.0.0-beta9",
     "eslint": "^3.0.1",
     "eslint-config-prometheusresearch": "^0.2.0",
+    "immutable": "^3.8.1",
     "jsdom": "^9.4.1",
     "mocha": "^2.5.3",
     "power-assert": "^1.4.1",

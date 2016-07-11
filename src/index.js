@@ -145,6 +145,14 @@ function makePureComponent(ReactiveBase, render = null) {
 
   return class extends ReactiveBase {
 
+    static withEquality(eq) {
+      return class extends this {
+        static eq = eq;
+      };
+    }
+
+    static eq = is;
+
     render() {
       return render === null
         ? super.render()
@@ -174,8 +182,8 @@ function makePureComponent(ReactiveBase, render = null) {
         }
       };
       let shouldUpdate = (
-        !shallowEqual(this.props, nextProps, onDerivableReplace) ||
-        !shallowEqual(this.state, nextState, onDerivableReplace)
+        !shallowEqual(this.props, nextProps, this.constructor.eq, onDerivableReplace) ||
+        !shallowEqual(this.state, nextState, this.constructor.eq, onDerivableReplace)
       );
       if (!shouldUpdate) {
         this._reactor.stop();
@@ -204,8 +212,8 @@ function is(x, y) {
   }
 }
 
-export function shallowEqual(objPrev, objNext, onDerivableReplace) {
-  if (is(objPrev, objNext)) {
+export function shallowEqual(objPrev, objNext, eq = is, onDerivableReplace) {
+  if (eq(objPrev, objNext)) {
     return true;
   }
 
@@ -239,12 +247,12 @@ export function shallowEqual(objPrev, objNext, onDerivableReplace) {
         } else {
           onDerivableReplace && onDerivableReplace(valPrev, valNext);
         }
-      } else if (valPrev.get() !== valNext.get()) {
+      } else if (!eq(valPrev.get(), valNext.get())) {
         return false;
       } else {
         onDerivableReplace && onDerivableReplace(valPrev, valNext);
       }
-    } else if (!is(valPrev, valNext)) {
+    } else if (!eq(valPrev, valNext)) {
       return false;
     }
   }
