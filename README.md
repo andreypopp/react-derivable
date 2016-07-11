@@ -37,8 +37,6 @@ installed for an application too):
 
 ## Usage
 
-##### Model application state
-
 Define your application state in terms of [derivable][]:
 
 ```js
@@ -46,8 +44,6 @@ import {atom} from 'derivable'
 
 let message = atom('Hello, World!')
 ```
-
-##### Define UI
 
 Define a React component which accepts and uses in render a reactive value
 `message`:
@@ -59,8 +55,6 @@ let Hello = props =>
   <div>{props.message.get()}</div>
 ```
 
-##### Make UI reactive
-
 Now produce a new reactive component using higher-order `reactive` component
 
 ```js
@@ -69,8 +63,6 @@ import reactive from 'react-reactive'
 let ReactiveHello = reactive(Hello)
 ```
 
-##### Render into DOM
-
 Render `<ReactiveHello />` into DOM and pass it a reactive `message` value:
 
 ```js
@@ -78,8 +70,6 @@ import ReactDOM from 'react-dom'
 
 ReactDOM.render(<Hello message={message} />, ...)
 ```
-
-##### Update model
 
 Each time reactive value updates - component gets rerendered:
 
