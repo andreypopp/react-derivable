@@ -70,7 +70,7 @@ export function pure(Component) {
 
 function decorateWith(Component, decorator) {
   let DecoratedComponent;
-  if (Component.prototype.isReactComponent) {
+  if (Component.prototype && Component.prototype.isReactComponent) {
     DecoratedComponent = decorator(Component);
   } else {
     DecoratedComponent =  decorator(React.Component, Component);
