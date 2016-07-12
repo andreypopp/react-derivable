@@ -73,7 +73,7 @@ function decorateWith(Component, decorator) {
   if (Component.prototype && Component.prototype.isReactComponent) {
     DecoratedComponent = decorator(Component);
   } else {
-    DecoratedComponent =  decorator(React.Component, Component);
+    DecoratedComponent = decorator(React.Component, Component);
   }
   transferComponentStaticProperties(Component, DecoratedComponent);
   return DecoratedComponent;
