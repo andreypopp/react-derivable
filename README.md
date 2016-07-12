@@ -19,6 +19,7 @@ values (defined in terms of [derivable][]) used in `render()` change.
 - [Guides](#guides)
   - [Local component state](#local-component-state)
   - [Flux/Redux-like unidirectional data flow](#fluxredux-like-unidirectional-data-flow)
+  - [Binding to external state sources](#binding-to-external-state-sources)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -193,36 +194,36 @@ reducer (a-la Redux):
 ```js
 import {atom} from 'derivable'
 
-function createApp(apply, initialState = {}) {
+function createApp(transfromWithAction, initialState = {}) {
   let state = atom(initialState)
   return {
     state: state.derive(state => state),
     dispatch(action) {
-      state.swap(state => apply(state, action))
+      let transform = transfromWithAction[action.type]
+      state.swap(state => transform(state, action))
     }
   }
 }
 ```
 
-Now we can use `createApp(...)` function to define an application in terms of
+Now we can use `createApp()` function to define an application in terms of
 initial state and actions which transform application state:
 
 ```js
+const CREATE_TODO = 'create-todo'
+
 let todoApp = createApp(
-  (state, action) => {
-    if (action.type === 'create-todo') {
-      return {
-        ...state,
-        todoList: state.todoList.concat({text: action.text})
-      }
+  {
+    [CREATE_TODO](state, action) {
+      let todoList = state.todoList.concat({text: action.text})
+      return {...state, todoList}
     }
-    return state
   },
   {todoList: []}
 )
 
 function createTodo(text) {
-  todoApp.dispatch({type: 'create-todo', text})
+  todoApp.dispatch({type: CREATE_TODO, text})
 }
 ```
 
@@ -240,6 +241,77 @@ let App = reactive(() =>
 )
 ```
 
+### Binding to external state sources
+
+Sometimes state is originated not from application but from some external
+sources. One notorious example is routing where state is stored and partially
+controlled by a browser.
+
+It is still useful to have access to that state and do it using the homogenous
+API.
+
+Like we already discovered we can use derivable library to implement local
+component state and flux like state management easily. Let's see how we can use
+derivable to implement routing based on browser navigation state (HTML5
+pushState API).
+
+We'll be using the [history][] npm package which makes working with HTML5 API
+smooth and simple.
+
+First step is to make a history object which will hold the navigation state and
+some methods to influence those state:
+
+```js
+import {createHistory as createBaseHistory} from 'history'
+import {atom} from 'derivable'
+
+function createHistory(options) {
+  let history = createBaseHistory(options)
+  let location = atom()
+  history.location = location.lens({
+    get: (location) => location,
+    set: (location, nextLocation) => history.push(nextLocation),
+  })
+  return history
+}
+
+let history = createHistory()
+```
+
+Now to build the router we just need to use `history.location` value in
+`render()`:
+
+```js
+let Router = reactive(props => {
+  let {pathname} = history.location.get()
+  // Any complex pathname matyching logic here, really.
+  if (pathname === '/') {
+    return <Home />
+  } else if (pathname === '/about') {
+    return <About />
+  } else {
+    return <NotFound />
+  }
+})
+```
+
+Now to change location you would need another component which transforms
+location state: Link. Also it could track "active" state (if link's location is
+the current location):
+
+```js
+let Link = reactive(props => {
+  let {pathname} = history.location.get()
+  let className = pathname == props.href ? 'active' : ''
+  let onClick = e => {
+    e.preventDefault()
+    history.location.set(props.href)
+  }
+  return <a {...props} onClick={onClick} className={className} />
+})
+```
+
 [React]: https://reactjs.org
 [derivable]: https://github.com/ds300/derivablejs
 [immutable]: https://github.com/facebook/immutable-js
+[history]: https://github.com/ReactJSTraining/history
