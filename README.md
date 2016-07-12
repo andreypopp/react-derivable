@@ -284,7 +284,7 @@ Now to build the router we just need to use `history.location` value in
 ```js
 let Router = reactive(props => {
   let {pathname} = history.location.get()
-  // Any complex pathname matyching logic here, really.
+  // Any complex pathname matching logic here, really.
   if (pathname === '/') {
     return <Home />
   } else if (pathname === '/about') {
