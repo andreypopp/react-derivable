@@ -267,7 +267,7 @@ import {atom} from 'derivable'
 
 function createHistory(options) {
   let history = createBaseHistory(options)
-  let location = atom()
+  let location = atom(history.getCurrentLocation())
   history.location = location.lens({
     get: (location) => location,
     set: (location, nextLocation) => history.push(nextLocation),
