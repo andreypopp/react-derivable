@@ -3,15 +3,13 @@
 let Benchmark = require('benchmark');
 let React = require('react');
 
-let atom = require('derivable').atom;
-let reactive = require('./').default;
+let {atom} = require('derivable');
+let {reactive} = require('../');
 
 let suite = new Benchmark.Suite();
 
 let message = atom('ok');
-let Component = reactive(function() {
-  return React.createElement('div', null, message.get());
-});
+let Component = reactive(() => React.createElement('div', null, message.get()));
 let component = new Component({}, {});
 component.componentWillMount && component.componentWillMount();
 
@@ -26,5 +24,4 @@ suite
 .on('complete', function() {
   console.log('Fastest is ' + this.filter('fastest').map('name')); // eslint-disable-line no-console
 })
-// run async
 .run({'async': true});
