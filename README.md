@@ -1,7 +1,7 @@
 # React Reactive
 
-[![Travis build status](https://img.shields.io/travis/andreypopp/react-reactive/master.svg)](https://travis-ci.org/andreypopp/react-reactive)
-[![npm](https://img.shields.io/npm/v/react-reactive.svg)](https://www.npmjs.com/package/react-reactive)
+[![Travis build status](https://img.shields.io/travis/andreypopp/react-derivable/master.svg)](https://travis-ci.org/andreypopp/react-derivable)
+[![npm](https://img.shields.io/npm/v/react-derivable.svg)](https://www.npmjs.com/package/react-derivable)
 
 React Reactive allows to define [React][] components which re-render when reactive
 values (defined in terms of [derivable][]) used in `render()` change.
@@ -31,7 +31,7 @@ installed for an application too):
 ```
 % npm install react
 % npm install derivable
-% npm install react-reactive
+% npm install react-derivable
 ```
 
 ## Usage
@@ -57,7 +57,7 @@ let Hello = props =>
 Now produce a new reactive component using higher-order `reactive` component
 
 ```js
-import reactive from 'react-reactive'
+import reactive from 'react-derivable'
 
 let ReactiveHello = reactive(Hello)
 ```
@@ -88,7 +88,7 @@ within `render()` change.
 
 ```js
 import React from 'react'
-import {reactive} from 'react-reactive'
+import {reactive} from 'react-derivable'
 
 let Reactive = reactive(props =>
   <div>{props.message.get()}</div>)
@@ -110,7 +110,7 @@ That allows to get rid of unnecessary re-renders.
 
 ```js
 import React from 'react'
-import {pure} from 'react-reactive'
+import {pure} from 'react-derivable'
 
 let Reactive = pure(props =>
   <div>{props.message.get()}</div>)
@@ -133,7 +133,7 @@ its equality definition:
 
 ```js
 import * as Immutable from 'immutable'
-import {pure} from 'react-reactive'
+import {pure} from 'react-derivable'
 
 let Reactive = pure(Component).withEquality(Immutable.is)
 ```
@@ -160,7 +160,7 @@ That's all it takes to introduce local component state:
 ```js
 import {Component} from 'react'
 import {atom} from 'derivable'
-import {reactive} from 'react-reactive'
+import {reactive} from 'react-derivable'
 
 class Counter extends Component {
 
@@ -232,7 +232,7 @@ through the `reactive(Component)` decorator:
 
 ```js
 import React from 'react'
-import {reactive} from 'react-reactive'
+import {reactive} from 'react-derivable'
 
 let App = reactive(() =>
   <ul>

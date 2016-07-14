@@ -13,7 +13,7 @@ function markup(element) {
   return element.innerHTML.replace(/ data\-reactroot="[^"]*"/g, '');
 }
 
-describe('react-reactive', function() {
+describe('react-derivable', function() {
 
   describe('shallowEqual', function() {
 

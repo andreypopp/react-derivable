@@ -1,5 +1,5 @@
 {
-  "name": "react-reactive",
+  "name": "react-derivable",
   "version": "0.1.0",
   "description": "Make React component react on changes in referened derivable values",
   "main": "lib/index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andreypopp/react-reactive.git"
+    "url": "git+https://github.com/andreypopp/react-derivable.git"
   },
   "keywords": [
     "react",
@@ -17,9 +17,9 @@
   "author": "Andrey Popp <8mayday@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andreypopp/react-reactive/issues"
+    "url": "https://github.com/andreypopp/react-derivable/issues"
   },
-  "homepage": "https://github.com/andreypopp/react-reactive#readme",
+  "homepage": "https://github.com/andreypopp/react-derivable#readme",
   "peerDependencies": {
     "derivable": "1.0.0-beta9",
     "react": ">= 0.14.0 < 16.0.0"
