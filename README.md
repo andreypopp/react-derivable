@@ -1,9 +1,9 @@
-# React Reactive
+# React Derivable
 
 [![Travis build status](https://img.shields.io/travis/andreypopp/react-derivable/master.svg)](https://travis-ci.org/andreypopp/react-derivable)
 [![npm](https://img.shields.io/npm/v/react-derivable.svg)](https://www.npmjs.com/package/react-derivable)
 
-React Reactive allows to define [React][] components which re-render when reactive
+React Derivable allows to define [React][] components which re-render when reactive
 values (defined in terms of [derivable][]) used in `render()` change.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
