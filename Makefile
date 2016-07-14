@@ -28,7 +28,7 @@ ci::
 doctoc:
 	@$(BIN)/doctoc --title '**Table of Contents**' ./README.md
 
-version-major version-minor version-patch:: lint check test build
+version-major version-minor version-patch:: lint test build
 	@npm version $(@:version-%=%)
 
 publish::
