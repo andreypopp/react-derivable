@@ -268,10 +268,7 @@ import {atom} from 'derivable'
 function createHistory(options) {
   let history = createBaseHistory(options)
   let location = atom(history.getCurrentLocation())
-  history.location = location.lens({
-    get: (location) => location,
-    set: (location, nextLocation) => history.push(nextLocation),
-  })
+  history.location = location.derive(location => location)
   return history
 }
 
@@ -305,7 +302,7 @@ let Link = reactive(props => {
   let className = pathname == props.href ? 'active' : ''
   let onClick = e => {
     e.preventDefault()
-    history.location.set(props.href)
+    history.push(props.href)
   }
   return <a {...props} onClick={onClick} className={className} />
 })
