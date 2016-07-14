@@ -30,7 +30,7 @@ installed for an application too):
 
 ```
 % npm install react
-% npm install derivable
+% npm install derivable@1.0.0-beta9
 % npm install react-derivable
 ```
 
@@ -90,7 +90,7 @@ within `render()` change.
 import React from 'react'
 import {reactive} from 'react-derivable'
 
-let Reactive = reactive(props =>
+let ReactiveFunctional = reactive(props =>
   <div>{props.message.get()}</div>)
 
 let ReactiveClassBased = reactive(class extends React.Component {
@@ -112,10 +112,10 @@ That allows to get rid of unnecessary re-renders.
 import React from 'react'
 import {pure} from 'react-derivable'
 
-let Reactive = pure(props =>
+let PureFunctional = pure(props =>
   <div>{props.message.get()}</div>)
 
-let ReactiveClassBased = pure(class extends React.Component {
+let PureClassBased = pure(class extends React.Component {
 
   render() {
     return <div>{this.props.message.get()}</div>
@@ -135,7 +135,7 @@ its equality definition:
 import * as Immutable from 'immutable'
 import {pure} from 'react-derivable'
 
-let Reactive = pure(Component).withEquality(Immutable.is)
+let Pure = pure(Component).withEquality(Immutable.is)
 ```
 
 ## Guides
