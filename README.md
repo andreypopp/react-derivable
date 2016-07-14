@@ -268,6 +268,7 @@ import {atom} from 'derivable'
 function createHistory(options) {
   let history = createBaseHistory(options)
   let location = atom(history.getCurrentLocation())
+  history.listen(loc => location.set(loc));
   history.location = location.derive(location => location)
   return history
 }
