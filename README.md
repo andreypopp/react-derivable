@@ -312,7 +312,7 @@ let Link = reactive(props => {
 
 ### Lifting regular React components to work with derivable values
 
-If you already have a React component which works with regualr JS values but
+If you already have a React component which works with regular JS values but
 want it to work with derivable values you can use this little trick:
 
 ```js
