@@ -326,7 +326,8 @@ class Hello extends React.Component {
   }
 }
 
-let ReactiveHello = reactive(props => <Hello {...unpack(props)} />)
+let ReactiveHello = reactive(props =>
+  <Hello {...unpack(props)} />)
 
 <ReactiveHello message={atom('Hi')} />
 ```
