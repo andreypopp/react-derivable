@@ -316,6 +316,9 @@ If you already have a React component which works with regualr JS values but
 want it to work with derivable values you can use this little trick:
 
 ```js
+import {atom, unpack} from 'derivable'
+import {reactive} from 'react-derivable'
+
 class Hello extends React.Component {
 
   render() {
@@ -323,11 +326,20 @@ class Hello extends React.Component {
   }
 }
 
-let ReactiveHello = reactive(({message, ...props}) =>
-  <Hello message={message.get()} {...props} />
-)
+let ReactiveHello = reactive(props => <Hello {...unpack(props)} />)
 
 <ReactiveHello message={atom('Hi')} />
+```
+
+In the example above `unpack(...)` will dereference every derivable value found
+in the `props` and pass them to the `<Hello />` component.
+
+Alternatively if you know which props are going to be derivable values you can
+do this manually:
+
+```js
+let ReactiveHello = reactive(props =>
+  <Hello message={props.message.get()} {...props} />)
 ```
 
 [React]: https://reactjs.org
