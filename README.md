@@ -327,20 +327,9 @@ class Hello extends React.Component {
 }
 
 let ReactiveHello = reactive(props =>
-  <Hello {...unpack(props)} />)
+  <Hello message={props.message.get()} {...props} />)
 
 <ReactiveHello message={atom('Hi')} />
-```
-
-In the example above `unpack(...)` will dereference every derivable value found
-in the `props` and pass them to the `<Hello />` component.
-
-Alternatively if you know which props are going to be derivable values you can
-do this manually:
-
-```js
-let ReactiveHello = reactive(props =>
-  <Hello message={props.message.get()} {...props} />)
 ```
 
 Also because you are passing values as plain props they are going to participate
