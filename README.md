@@ -343,6 +343,28 @@ let ReactiveHello = reactive(props =>
   <Hello message={props.message.get()} {...props} />)
 ```
 
+Also because you are passing values as plain props they are going to participate
+in React component lifecycle as usual (e.g. you can access prev values in
+`componentDidUpdate`):
+
+```js
+class Hello extends React.Component {
+
+  render() {
+    return <div>{this.props.message}</div>
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.message !== this.props.message) {
+      // do something!
+    }
+  }
+}
+
+let ReactiveHello = reactive(props =>
+  <Hello {...unpack(props)} />)
+```
+
 [React]: https://reactjs.org
 [derivable]: https://github.com/ds300/derivablejs
 [immutable]: https://github.com/facebook/immutable-js
