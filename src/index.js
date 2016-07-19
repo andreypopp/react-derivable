@@ -12,6 +12,38 @@ import {
   isDerivable
 } from 'derivable';
 
+class ReactUpdateReactor extends Reactor {
+
+  constructor(component) {
+    super();
+    this.react = this.constructor.prototype.react;
+    this.component = component;
+    this.dependencies = null;
+  }
+
+  setDependenciesFrom(thunk) {
+    let result;
+    this.setDependencies(captureDereferences(() => result = thunk()));
+    return result;
+  }
+
+  setDependencies(dependencies) {
+    this._parent = struct(dependencies);
+    this.dependencies = dependencies;
+  }
+
+  react() {
+    this.stop();
+    this.component.forceUpdate();
+  }
+
+  shutdown() {
+    this.stop();
+    this.dependencies = null;
+    this.component = null;
+  }
+}
+
 /**
  * Produce reactive component out of original React component.
  *
@@ -84,21 +116,16 @@ function makeReactiveComponent(Base, render = null) {
 
     constructor(props, context) {
       super(props, context);
-      this._dependencies = [];
-      this._reactor = null;
+      this._reactor = new ReactUpdateReactor(this);
     }
 
     render() {
-      let element;
-      // collect dependencies while running render
-      let dependencies = captureDereferences(() => {
-        element = render === null
+      let element = this._reactor.setDependenciesFrom(() =>
+        render === null
           ? super.render()
-          : render(this.props, this.context);
-      });
-
-      this._startReactor(dependencies);
-
+          : render(this.props, this.context)
+      );
+      this._reactor.start();
       return element;
     }
 
@@ -110,29 +137,12 @@ function makeReactiveComponent(Base, render = null) {
     }
 
     componentWillUnmount(...args) {
-      this._reactor.stop();
+      this._reactor.shutdown();
       this._reactor = null;
-      this._dependencies = null;
       if (super.componentWillUnmount) {
         super.componentWillUnmount(...args);
       }
     }
-
-    _startReactor(dependencies) {
-      this._dependencies = dependencies;
-      if (this._reactor === null) {
-        this._reactor = new Reactor(struct(dependencies), this._react);
-      } else {
-        // _reactor is stopped, so it is (?) safe to do so
-        this._reactor._parent = struct(dependencies);
-      }
-      this._reactor.start();
-    }
-
-    _react = () => {
-      this._reactor.stop();
-      this.forceUpdate();
-    };
 
   };
 }
@@ -174,7 +184,7 @@ function makePureComponent(ReactiveBase, render = null) {
       // Why it is safe not to re-render on equivalent but not equal reactive
       // values? Because observation of both equivalent reactive values leads to
       // the same render result!
-      let dependencies = this._dependencies.slice(0);
+      let dependencies = this._reactor.dependencies.slice(0);
       let onDerivableReplace = (prev, next) => {
         let idx = dependencies.indexOf(prev);
         if (idx > -1) {
@@ -185,9 +195,12 @@ function makePureComponent(ReactiveBase, render = null) {
         !shallowEqual(this.props, nextProps, this.constructor.eq, onDerivableReplace) ||
         !shallowEqual(this.state, nextState, this.constructor.eq, onDerivableReplace)
       );
+      // if we shouldn't update we just re-subscribe to the new set of
+      // dependencies
       if (!shouldUpdate) {
         this._reactor.stop();
-        this._startReactor(dependencies);
+        this._reactor.setDependencies(dependencies);
+        this._reactor.start();
       }
       return shouldUpdate;
     }
