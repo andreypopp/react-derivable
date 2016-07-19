@@ -20,6 +20,7 @@ values (defined in terms of [derivable][]) used in `render()` change.
   - [Local component state](#local-component-state)
   - [Flux/Redux-like unidirectional data flow](#fluxredux-like-unidirectional-data-flow)
   - [Binding to external state sources](#binding-to-external-state-sources)
+  - [Lifting regular React components to work with derivable values](#lifting-regular-react-components-to-work-with-derivable-values)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -307,6 +308,32 @@ let Link = reactive(props => {
   }
   return <a {...props} onClick={onClick} className={className} />
 })
+```
+
+### Lifting regular React components to work with derivable values
+
+If you already have a React component which works with regualr JS values but
+want it to work with derivable values you can use this little trick:
+
+```js
+class Hello extends React.Component {
+
+  render() {
+    return <div>{this.props.message}</div>
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.message !== this.props.message) {
+      // do something!
+    }
+  }
+}
+
+let ReactiveHello = reactive(({message, ...props}) =>
+  <Hello message={message.get()} {...props} />
+)
+
+<ReactiveHello message={atom('Hi')} />
 ```
 
 [React]: https://reactjs.org
