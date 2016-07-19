@@ -321,12 +321,6 @@ class Hello extends React.Component {
   render() {
     return <div>{this.props.message}</div>
   }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.message !== this.props.message) {
-      // do something!
-    }
-  }
 }
 
 let ReactiveHello = reactive(({message, ...props}) =>
