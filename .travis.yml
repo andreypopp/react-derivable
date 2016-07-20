@@ -3,4 +3,6 @@ scripts:
 - make test
 - make test-flow
 node_js:
-- stable
+- 4
+- 5
+- 6
