@@ -33,6 +33,7 @@
     "doctoc": "^1.2.0",
     "eslint": "^3.0.1",
     "eslint-config-prometheusresearch": "^0.2.0",
+    "eslint-plugin-react": "^5.2.2",
     "flow-bin": "^0.29.0",
     "immutable": "^3.8.1",
     "jsdom": "^9.4.1",
