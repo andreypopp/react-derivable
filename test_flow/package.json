@@ -1,0 +1,10 @@
+{
+  "name": "react-derivable-test-flow",
+  "version": "1.0.0",
+  "dependencies": {
+    "derivable": "^1.0.0-beta10",
+    "flow-bin": "^0.29.0",
+    "react": "^15.2.1",
+    "react-derivable": "../"
+  }
+}

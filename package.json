@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/andreypopp/react-derivable#readme",
   "peerDependencies": {
-    "derivable": "1.0.0-beta9",
+    "derivable": "1.0.0-beta10",
     "react": ">= 0.14.0 < 16.0.0"
   },
   "devDependencies": {
@@ -29,10 +29,11 @@
     "babel-core": "^6.10.4",
     "babel-preset-prometheusresearch": "^0.1.0",
     "benchmark": "^2.1.0",
-    "derivable": "1.0.0-beta9",
+    "derivable": "1.0.0-beta10",
     "doctoc": "^1.2.0",
     "eslint": "^3.0.1",
     "eslint-config-prometheusresearch": "^0.2.0",
+    "flow-bin": "^0.29.0",
     "immutable": "^3.8.1",
     "jsdom": "^9.4.1",
     "mocha": "^2.5.3",

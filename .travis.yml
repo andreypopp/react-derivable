@@ -1,3 +1,6 @@
 language: node_js
+scripts:
+- make test
+- make test-flow
 node_js:
 - stable

@@ -1,9 +1,10 @@
-.DELETE_ON_ERROR:
+l.DELETE_ON_ERROR:
 
 BIN           = ./node_modules/.bin
 TESTS         = $(shell find src -path '*/__tests__/*-test.js')
 FIXTURES      = $(shell find src -path '*/__tests__/*-fixture/*.js')
-SRC           = $(filter-out $(TESTS) $(FIXTURES), $(shell find src -name '*.js'))
+SRC           = $(filter-out $(TESTS) $(FIXTURES), \
+                  $(shell find src -name '*.js' -or -name '*.js.flow'))
 LIB           = $(SRC:src/%=lib/%)
 MOCHA_OPTS    = -R dot --require ./src/__tests__/setup.js
 
@@ -21,6 +22,9 @@ check::
 
 test::
 	@$(BIN)/babel-node $(BIN)/_mocha $(MOCHA_OPTS) $(TESTS)
+
+test-flow::
+	@(cd test_flow/ && npm install && ../$(BIN)/flow check)
 
 ci::
 	@$(BIN)/babel-node $(BIN)/_mocha --watch $(MOCHA_OPTS) $(TESTS)
@@ -42,3 +46,8 @@ lib/%.js: src/%.js
 	@echo "Building $<"
 	@mkdir -p $(@D)
 	@$(BIN)/babel $(BABEL_OPTIONS) -o $@ $<
+
+lib/%.js.flow: src/%.js.flow
+	@echo "Building $<"
+	@mkdir -p $(@D)
+	@cp $< $@
