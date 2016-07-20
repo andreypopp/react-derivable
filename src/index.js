@@ -12,7 +12,7 @@ import {
   isDerivable
 } from 'derivable';
 
-class ReactUpdateReactor extends Reactor {
+export class ReactUpdateReactor extends Reactor {
 
   constructor(component) {
     super();
