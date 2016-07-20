@@ -43,8 +43,6 @@
     "sinon": "^1.17.4"
   },
   "dependencies": {
-    "domlight.js": "^1.1.2",
-    "invariant": "^2.2.1",
-    "react-inspector": "^1.1.0"
+    "invariant": "^2.2.1"
   }
 }
