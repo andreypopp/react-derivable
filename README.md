@@ -31,7 +31,7 @@ installed for an application too):
 
 ```
 % npm install react
-% npm install derivable@1.0.0-beta9
+% npm install derivable@1.0.0-beta10
 % npm install react-derivable
 ```
 
