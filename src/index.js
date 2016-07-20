@@ -12,6 +12,10 @@ import {
   isDerivable
 } from 'derivable';
 
+/**
+ * Reactor which wraps React component and schedules its update when
+ * dependencies change.
+ */
 export class ReactUpdateReactor extends Reactor {
 
   constructor(component) {
