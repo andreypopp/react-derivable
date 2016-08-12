@@ -195,12 +195,12 @@ reducer (a-la Redux):
 ```js
 import {atom} from 'derivable'
 
-function createApp(transfromWithAction, initialState = {}) {
+function createApp(transformWithAction, initialState = {}) {
   let state = atom(initialState)
   return {
     state: state.derive(state => state),
     dispatch(action) {
-      let transform = transfromWithAction[action.type]
+      let transform = transformWithAction[action.type]
       state.swap(state => transform(state, action))
     }
   }
