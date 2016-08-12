@@ -357,9 +357,9 @@ let ReactiveHello = reactive(props =>
 
 ## Examples
 
-See examples in [examples](./examples) directory.
+See examples in [examples](./example) directory.
 
 [React]: https://reactjs.org
 [derivable]: https://github.com/ds300/derivablejs
 [immutable]: https://github.com/facebook/immutable-js
-[history]: https://github.com/ReactJSTraining/history
+[history]: https://github.com/ReactJSTraining/history§
