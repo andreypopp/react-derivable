@@ -29,6 +29,7 @@
     "babel-core": "^6.10.4",
     "babel-preset-prometheusresearch": "^0.1.0",
     "benchmark": "^2.1.0",
+    "create-react-app": "^0.2.0",
     "derivable": "1.0.0-beta10",
     "doctoc": "^1.2.0",
     "eslint": "^3.0.1",

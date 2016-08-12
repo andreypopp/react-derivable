@@ -21,6 +21,7 @@ values (defined in terms of [derivable][]) used in `render()` change.
   - [Flux/Redux-like unidirectional data flow](#fluxredux-like-unidirectional-data-flow)
   - [Binding to external state sources](#binding-to-external-state-sources)
   - [Lifting regular React components to work with derivable values](#lifting-regular-react-components-to-work-with-derivable-values)
+- [Examples](#examples)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -353,6 +354,10 @@ class Hello extends React.Component {
 let ReactiveHello = reactive(props =>
   <Hello {...unpack(props)} />)
 ```
+
+## Examples
+
+See examples in [examples](./examples) directory.
 
 [React]: https://reactjs.org
 [derivable]: https://github.com/ds300/derivablejs
