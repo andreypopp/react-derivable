@@ -83,9 +83,9 @@ message.set('Works!')
 ### `reactive(Component)`
 
 As shown in the usage section above `reactive(Component)` decorator produces a
-reactive component out of original one.
+reactive component out of an original one.
 
-Reactive components re-render when one of the reactive values references from
+Reactive components re-render when one of the reactive values referenced from
 within `render()` change.
 
 ```js
