@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/andreypopp/react-derivable#readme",
   "peerDependencies": {
-    "derivable": "1.0.0-beta10",
+    "derivable": "1.0.0-beta11",
     "react": ">= 0.14.0 < 16.0.0"
   },
   "devDependencies": {
