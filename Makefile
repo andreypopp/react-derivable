@@ -1,4 +1,4 @@
-l.DELETE_ON_ERROR:
+.DELETE_ON_ERROR:
 
 BIN           = ./node_modules/.bin
 TESTS         = $(shell find src -path '*/__tests__/*-test.js')
@@ -24,7 +24,7 @@ test::
 	@$(BIN)/babel-node $(BIN)/_mocha $(MOCHA_OPTS) $(TESTS)
 
 test-flow::
-	@(cd test_flow/ && npm install && ../$(BIN)/flow check)
+	@(cd test_flow/ && ../$(BIN)/pnpm install && ../$(BIN)/flow check)
 
 ci::
 	@$(BIN)/babel-node $(BIN)/_mocha --watch $(MOCHA_OPTS) $(TESTS)

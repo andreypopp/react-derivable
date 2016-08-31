@@ -3,5 +3,5 @@
  * @flow
  */
 
-declare export function reactive(Component: T): T;
-declare export function pure(Component: T): T;
+declare export function reactive<T: Function>(component: T): T;
+declare export function pure<T: Function>(component: T): T;

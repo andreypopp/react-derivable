@@ -49,3 +49,27 @@ let Z = ReactDerivable.pure(X);
 
 // $ExpectError
 <Z message={atom(42)} />;
+
+function Counter({num}: {num: Derivable<number>}) {
+  return <div>{num}</div>;
+}
+
+let RCounter = ReactDerivable.reactive(Counter);
+
+<RCounter num={atom(42)} />;
+
+// $ExpectError
+<RCounter num={atom('message')} />
+
+let PCounter = ReactDerivable.pure(Counter);
+
+<PCounter num={atom(42)} />;
+
+// $ExpectError
+<PCounter num={atom('message')} />
+
+// $ExpectError
+ReactDerivable.pure(42);
+
+// $ExpectError
+ReactDerivable.reactive('oops');

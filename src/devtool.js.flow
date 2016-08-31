@@ -3,6 +3,7 @@
  * @flow
  */
 
+import type {Component} from 'react';
 import type {Derivable} from 'derivable';
 
-declare export function collectReactComponentList(derivable: Derivable<*>): Array<React.Component<*, *, *>>;
+declare export function collectReactComponentList(derivable: Derivable<*>): Array<Component<*, *, *>>;
