@@ -35,7 +35,7 @@
     "eslint": "^3.0.1",
     "eslint-config-prometheusresearch": "^0.2.0",
     "eslint-plugin-react": "^5.2.2",
-    "flow-bin": "^0.31.1",
+    "flow-bin": "^0.37.0",
     "immutable": "^3.8.1",
     "jsdom": "^9.4.1",
     "mocha": "^2.5.3",
