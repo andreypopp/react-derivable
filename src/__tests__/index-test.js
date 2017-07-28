@@ -4,6 +4,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import {atom} from 'derivable';
 import * as Immutable from 'immutable';
 
@@ -493,38 +494,38 @@ function makeComponentDecoratorTestSuite(decorate) {
 
   it('preserves propTypes for class components', function() {
     class X extends React.Component {
-      static propTypes = {x: React.PropTypes.string};
+      static propTypes = {x: PropTypes.string};
       render() {
         return null;
       }
     }
-    expect(decorate(X).propTypes.x).toBe(React.PropTypes.string);
+    expect(decorate(X).propTypes.x).toBe(PropTypes.string);
   });
 
   it('preserves propTypes for functional components', function() {
     function X() {
       return null;
     }
-    X.propTypes = {x: React.PropTypes.string};
-    expect(decorate(X).propTypes.x).toBe(React.PropTypes.string);
+    X.propTypes = {x: PropTypes.string};
+    expect(decorate(X).propTypes.x).toBe(PropTypes.string);
   });
 
   it('preserves contextTypes for class components', function() {
     class X extends React.Component {
-      static contextTypes = {x: React.PropTypes.string};
+      static contextTypes = {x: PropTypes.string};
       render() {
         return null;
       }
     }
-    expect(decorate(X).contextTypes.x).toBe(React.PropTypes.string);
+    expect(decorate(X).contextTypes.x).toBe(PropTypes.string);
   });
 
   it('preserves contextTypes for functional components', function() {
     function X() {
       return null;
     }
-    X.contextTypes = {x: React.PropTypes.string};
-    expect(decorate(X).contextTypes.x).toBe(React.PropTypes.string);
+    X.contextTypes = {x: PropTypes.string};
+    expect(decorate(X).contextTypes.x).toBe(PropTypes.string);
   });
 
   it('preserves defaultProps for class components', function() {

@@ -45,6 +45,7 @@
     "react-dom": "^15.2.1"
   },
   "dependencies": {
-    "invariant": "^2.2.1"
+    "invariant": "^2.2.1",
+    "prop-types": "^15.5.10"
   }
 }
