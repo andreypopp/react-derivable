@@ -1,3 +1,7 @@
 {
-  "extends": "prometheusresearch"
+  "extends": "prometheusresearch",
+  "globals": {
+    "jest": true,
+    "expect": true
+  }
 }

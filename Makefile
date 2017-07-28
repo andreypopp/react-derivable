@@ -6,7 +6,6 @@ FIXTURES      = $(shell find src -path '*/__tests__/*-fixture/*.js')
 SRC           = $(filter-out $(TESTS) $(FIXTURES), \
                   $(shell find src -name '*.js' -or -name '*.js.flow'))
 LIB           = $(SRC:src/%=lib/%)
-MOCHA_OPTS    = -R dot --require ./src/__tests__/setup.js
 
 build::
 	@$(MAKE) -j 8 $(LIB)
@@ -21,13 +20,13 @@ check::
 	@$(BIN)/flow --show-all-errors src
 
 test::
-	@$(BIN)/babel-node $(BIN)/_mocha $(MOCHA_OPTS) $(TESTS)
+	@$(BIN)/jest
 
 test-flow::
 	@(cd test_flow/ && npm install && $(BIN)/flow check-contents < ./index.js)
 
 ci::
-	@$(BIN)/babel-node $(BIN)/_mocha --watch $(MOCHA_OPTS) $(TESTS)
+	@$(BIN)/jest --watch
 
 doctoc:
 	@$(BIN)/doctoc --title '**Table of Contents**' ./README.md
