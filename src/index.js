@@ -5,19 +5,13 @@
 
 import invariant from 'invariant';
 import React from 'react';
-import {
-  __Reactor as Reactor,
-  captureDereferences,
-  struct,
-  isDerivable
-} from 'derivable';
+import {__Reactor as Reactor, captureDereferences, struct, isDerivable} from 'derivable';
 
 /**
  * Reactor which wraps React component and schedules its update when
  * dependencies change.
  */
 export class ReactUpdateReactor extends Reactor {
-
   constructor(component) {
     super();
     this.react = this.constructor.prototype.react;
@@ -27,7 +21,7 @@ export class ReactUpdateReactor extends Reactor {
 
   setDependenciesFrom(thunk) {
     let result;
-    this.setDependencies(captureDereferences(() => result = thunk()));
+    this.setDependencies(captureDereferences(() => (result = thunk())));
     return result;
   }
 
@@ -117,17 +111,14 @@ function decorateWith(Component, decorator) {
 
 function makeReactiveComponent(Base, render = null) {
   return class extends Base {
-
     constructor(props, context) {
       super(props, context);
       this._reactor = new ReactUpdateReactor(this);
     }
 
     render() {
-      let element = this._reactor.setDependenciesFrom(() =>
-        render === null
-          ? super.render()
-          : render(this.props, this.context)
+      let element = this._reactor.setDependenciesFrom(
+        () => (render === null ? super.render() : render(this.props, this.context)),
       );
       this._reactor.start();
       return element;
@@ -147,18 +138,16 @@ function makeReactiveComponent(Base, render = null) {
         super.componentWillUnmount(...args);
       }
     }
-
   };
 }
 
 function makePureComponent(ReactiveBase, render = null) {
   invariant(
     ReactiveBase.prototype.shouldComponentUpdate === undefined,
-    'pure(Component): shouldComponentUpdate already defined'
+    'pure(Component): shouldComponentUpdate already defined',
   );
 
   return class extends ReactiveBase {
-
     static withEquality(eq) {
       return class extends this {
         static eq = eq;
@@ -168,9 +157,7 @@ function makePureComponent(ReactiveBase, render = null) {
     static eq = is;
 
     render() {
-      return render === null
-        ? super.render()
-        : render(this.props, this.context);
+      return render === null ? super.render() : render(this.props, this.context);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -195,10 +182,9 @@ function makePureComponent(ReactiveBase, render = null) {
           dependencies.splice(idx, 1, next);
         }
       };
-      let shouldUpdate = (
+      let shouldUpdate =
         !shallowEqual(this.props, nextProps, this.constructor.eq, onDerivableReplace) ||
-        !shallowEqual(this.state, nextState, this.constructor.eq, onDerivableReplace)
-      );
+        !shallowEqual(this.state, nextState, this.constructor.eq, onDerivableReplace);
       // if we shouldn't update we just re-subscribe to the new set of
       // dependencies
       if (!shouldUpdate) {
@@ -208,7 +194,6 @@ function makePureComponent(ReactiveBase, render = null) {
       }
       return shouldUpdate;
     }
-
   };
 }
 
@@ -235,8 +220,10 @@ export function shallowEqual(objPrev, objNext, eq = is, onDerivableReplace) {
   }
 
   if (
-    typeof objPrev !== 'object' || objPrev === null ||
-    typeof objNext !== 'object' || objNext === null
+    typeof objPrev !== 'object' ||
+    objPrev === null ||
+    typeof objNext !== 'object' ||
+    objNext === null
   ) {
     return false;
   }
