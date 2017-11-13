@@ -154,7 +154,7 @@ function makePureComponent(ReactiveBase, render = null) {
       };
     }
 
-    static eq = is;
+    static eq = Object.is;
 
     render() {
       return render === null ? super.render() : render(this.props, this.context);
@@ -206,15 +206,7 @@ function transferComponentStaticProperties(From, To) {
 
 let hasOwnProperty = Object.prototype.hasOwnProperty;
 
-function is(x, y) {
-  if (x === y) {
-    return x !== 0 || 1 / x === 1 / y;
-  } else {
-    return x !== x && y !== y;
-  }
-}
-
-export function shallowEqual(objPrev, objNext, eq = is, onDerivableReplace) {
+export function shallowEqual(objPrev, objNext, eq = Object.is, onDerivableReplace) {
   if (eq(objPrev, objNext)) {
     return true;
   }
