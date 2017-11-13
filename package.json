@@ -3,6 +3,9 @@
   "version": "0.3.0",
   "description": "Make React component react on changes in referened derivable values",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "make lint test"
   },
@@ -21,7 +24,7 @@
   },
   "homepage": "https://github.com/andreypopp/react-derivable#readme",
   "peerDependencies": {
-    "derivable": "2.0.0-beta.0",
+    "derivable": "2.0.0-beta.1",
     "react": ">= 0.14.0 < 16.0.0"
   },
   "devDependencies": {
@@ -31,7 +34,7 @@
     "babel-preset-prometheusresearch": "^0.1.0",
     "benchmark": "^2.1.0",
     "create-react-app": "^0.2.0",
-    "derivable": "1.0.0-beta11",
+    "derivable": "2.0.0-beta.1",
     "doctoc": "^1.2.0",
     "eslint": "^3.0.1",
     "eslint-config-prometheusresearch": "^0.2.0",

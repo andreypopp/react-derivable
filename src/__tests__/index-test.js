@@ -424,15 +424,15 @@ describe('react-derivable', function() {
             expect(renderCount).toBe(1);
             expect(markup(root)).toBe('<div>World</div>');
 
-            message.swap(m => m.set('a', 'x'));
+            message.update(m => m.set('a', 'x'));
             expect(renderCount).toBe(1);
             expect(markup(root)).toBe('<div>World</div>');
 
-            nextMessage.swap(m => m.set('a', 'y'));
+            nextMessage.update(m => m.set('a', 'y'));
             expect(renderCount).toBe(2);
             expect(markup(root)).toBe('<div>y</div>');
 
-            nextMessage.swap(m => m.set('a', 'z'));
+            nextMessage.update(m => m.set('a', 'z'));
             expect(renderCount).toBe(3);
             expect(markup(root)).toBe('<div>z</div>');
           });
