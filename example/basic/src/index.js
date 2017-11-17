@@ -13,11 +13,17 @@ let counter = atom(0);
  * Actions which operate on state.
  */
 
-let increase = () =>
-  counter.swap(value => value + 1);
+let increase = () => {
+  console.log('increase');
+  counter.update(value => value + 1);
+  console.log('increase', counter.get());
+};
 
-let decrease = () =>
-  counter.swap(value => value - 1);
+let decrease = () => {
+  console.log('decrease');
+  counter.update(value => value - 1);
+  console.log('decrease', counter.get());
+};
 
 /**
  * Reactive component which reads from state and modifies it via actions.
@@ -30,18 +36,14 @@ let App = reactive(props =>
       <button onClick={increase}>+</button>
       <button onClick={decrease}>-</button>
     </div>
-  </div>
+  </div>,
 );
 
 /**
  * Render application into DOM.
  */
 
-let render = () =>
-  ReactDOM.render(
-    <App />,
-    document.getElementById('root')
-  );
+let render = () => ReactDOM.render(<App />, document.getElementById('root'));
 
 /**
  * This is not required to use React and Derivable!

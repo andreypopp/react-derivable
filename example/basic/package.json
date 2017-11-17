@@ -6,10 +6,10 @@
     "react-scripts": "0.2.1"
   },
   "dependencies": {
-    "derivable": "^1.0.0-beta10",
-    "react": "^15.2.1",
+    "derivable": "2.0.0-beta.0",
+    "react": "^16.0.0",
     "react-derivable": "../../",
-    "react-dom": "^15.2.1"
+    "react-dom": "^16.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

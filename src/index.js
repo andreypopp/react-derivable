@@ -5,7 +5,14 @@
 
 import invariant from 'invariant';
 import React from 'react';
-import {__Reactor as Reactor, captureDereferences, struct, isDerivable} from 'derivable';
+import {
+  __Reactor as Reactor,
+  captureDereferences,
+  struct,
+  atom,
+  derivation,
+  isDerivable,
+} from 'derivable';
 
 /**
  * Reactor which wraps React component and schedules its update when
@@ -17,6 +24,7 @@ export class ReactUpdateReactor extends Reactor {
     this.react = this.constructor.prototype.react;
     this.component = component;
     this.dependencies = null;
+    this.paused = false;
   }
 
   setDependenciesFrom(thunk) {
@@ -31,8 +39,9 @@ export class ReactUpdateReactor extends Reactor {
   }
 
   react() {
-    this.stop();
-    this.component.forceUpdate();
+    if (!this.paused) {
+      this.component.forceUpdate();
+    }
   }
 
   shutdown() {
@@ -109,31 +118,64 @@ function decorateWith(Component, decorator) {
   return DecoratedComponent;
 }
 
+const sentinel = {
+  valueOf() {
+    return '<DUMMYRENDER>';
+  },
+};
+
 function makeReactiveComponent(Base, render = null) {
   return class extends Base {
     constructor(props, context) {
       super(props, context);
-      this._reactor = new ReactUpdateReactor(this);
+      this._allowRender = true;
+      this._ticker = atom(0);
+      this._originalRender = render !== null ? render : this.render;
+      this._renderDerivation = derivation(() => {
+        this._ticker.get();
+        let element;
+        if (this._allowRender) {
+          element = this._originalRender(this.props, this.context);
+        } else {
+          element = sentinel;
+        }
+        //console.log('derive', element === sentinel ? 'DUMMY' : '<RENDER>');
+        return element;
+      });
+      this._renderDerivation.react(
+        () => {
+          if (!this._allowRender) {
+            //console.log('scheduling update');
+            this.forceUpdate();
+          }
+        },
+        {skipFirst: true},
+      );
+      this.render = this._reactiveRender;
     }
 
-    render() {
-      let element = this._reactor.setDependenciesFrom(
-        () => (render === null ? super.render() : render(this.props, this.context)),
-      );
-      this._reactor.start();
+    _reactiveRender() {
+      // console.log(this._renderDerivation);
+      if (!this._allowRender) {
+        //console.log('nudging');
+        this._allowRender = true;
+        this._renderDerivation._forceEval();
+      }
+      const element = this._renderDerivation.get();
+      //console.log('render', element === sentinel ? 'DUMMY' : '<RENDER>');
+      this._allowRender = false;
       return element;
     }
 
-    componentWillUpdate(...args) {
-      this._reactor.stop();
-      if (super.componentWillUpdate) {
-        super.componentWillUpdate(...args);
-      }
+    componentWillReceiveProps() {
+      this._ticker.swap(x => x + 1);
     }
 
     componentWillUnmount(...args) {
-      this._reactor.shutdown();
-      this._reactor = null;
+      if (this._reactor != null) {
+        this._reactor.shutdown();
+        this._reactor = null;
+      }
       if (super.componentWillUnmount) {
         super.componentWillUnmount(...args);
       }
@@ -188,9 +230,13 @@ function makePureComponent(ReactiveBase, render = null) {
       // if we shouldn't update we just re-subscribe to the new set of
       // dependencies
       if (!shouldUpdate) {
-        this._reactor.stop();
+        const prevReactor = this._reactor;
+        this._reactor = new ReactUpdateReactor(this);
         this._reactor.setDependencies(dependencies);
         this._reactor.start();
+        if (prevReactor != null) {
+          prevReactor.shutdown();
+        }
       }
       return shouldUpdate;
     }

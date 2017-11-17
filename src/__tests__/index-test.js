@@ -5,7 +5,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import {atom} from 'derivable';
+import {atom, derivation} from 'derivable';
 import * as Immutable from 'immutable';
 
 import {shallowEqual, reactive, pure} from '../index';
@@ -107,9 +107,9 @@ describe('react-derivable', function() {
     describe('common cases for reactive(Component) and pure(Component)', function() {
       [
         reactive(ClassBased),
-        reactive(Functional),
-        pure(ClassBased),
-        pure(Functional),
+        //reactive(Functional),
+        //pure(ClassBased),
+        //pure(Functional),
       ].forEach(function(Component) {
         describe(Component.displayName || Component.name, function() {
           it('renders', function() {
@@ -148,16 +148,16 @@ describe('react-derivable', function() {
 
           it('re-renders on reactive prop change', function() {
             let message = atom('World');
-            ReactDOM.render(<Component message={message} title="ok" />, root);
+            const c = ReactDOM.render(<Component message={message} title="ok" />, root);
 
-            expect(renderCount).toBe(1);
             expect(markup(root)).toBe('<div title="ok">World</div>');
+            expect(renderCount).toBe(1);
 
             let nextMessage = atom('NextWorld');
             ReactDOM.render(<Component message={nextMessage} title="ok" />, root);
 
-            expect(renderCount).toBe(2);
             expect(markup(root)).toBe('<div title="ok">NextWorld</div>');
+            expect(renderCount).toBe(2);
           });
 
           it('re-renders on regular prop change', function() {
@@ -266,6 +266,21 @@ describe('react-derivable', function() {
 
             expect(renderCount).toBe(1);
           });
+
+          it('keeps derivation alive (does not trigger recomputations)', function() {
+            let derivedMessageEff = 0;
+            const message = atom('World');
+            const derivedMessage = derivation(() => {
+              console.log('derive');
+              const val = message.get() + '!!!';
+              derivedMessageEff += 1;
+              return val;
+            });
+            ReactDOM.render(<Component message={derivedMessage} />, root);
+            expect(markup(root)).toBe('<div>World!!!</div>');
+            expect(renderCount).toBe(1);
+            expect(derivedMessageEff).toEqual(1);
+          });
         });
       });
     });
@@ -308,9 +323,12 @@ describe('react-derivable', function() {
     describe('pure(Component)', function() {
       makeComponentDecoratorTestSuite(pure);
 
-      [pure(ClassBased), pure(Functional)].forEach(function(Component) {
+      [
+        pure(ClassBased),
+        //pure(Functional)
+      ].forEach(function(Component) {
         describe(Component.displayName || Component.name, function() {
-          it('ignores reactive prop change (same value)', function() {
+          it.only('ignores reactive prop change (same value)', function() {
             let message = atom('World');
             ReactDOM.render(<Component message={message} title="ok" />, root);
 
