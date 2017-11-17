@@ -2,4 +2,3 @@ node_modules/
 lib/
 examples/*/bundle
 npm-debug.log
-yarn.lock
