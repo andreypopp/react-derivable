@@ -7,7 +7,25 @@
     "lib"
   ],
   "scripts": {
-    "test": "make lint test"
+    "build": "make build",
+    "test": "yarn build && jest && eslint src"
+  },
+  "babel": {
+    "env": {
+      "build": {
+        "presets": [
+          "prometheusresearch"
+        ]
+      },
+      "test": {
+        "presets": [
+          "react"
+        ],
+        "plugins": [
+          "transform-class-properties"
+        ]
+      }
+    }
   },
   "repository": {
     "type": "git",
@@ -31,9 +49,12 @@
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
     "babel-jest": "^20.0.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-prometheusresearch": "^0.1.0",
+    "babel-preset-react": "^6.24.1",
     "benchmark": "^2.1.0",
     "create-react-app": "^0.2.0",
+    "cross-env": "^5.1.1",
     "derivable": "2.0.0-beta.1",
     "doctoc": "^1.2.0",
     "eslint": "^3.0.1",

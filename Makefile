@@ -44,7 +44,7 @@ clean::
 lib/%.js: src/%.js
 	@echo "Building $<"
 	@mkdir -p $(@D)
-	@$(BIN)/babel $(BABEL_OPTIONS) -o $@ $<
+	@(cross-env NODE_ENV=build $(BIN)/babel $(BABEL_OPTIONS) -o $@ $<)
 
 lib/%.js.flow: src/%.js.flow
 	@echo "Building $<"
