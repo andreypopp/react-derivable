@@ -2,13 +2,13 @@
  * @copyright 2016-present, Prometheus Research, LLC
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import {atom} from 'derivable';
-import * as Immutable from 'immutable';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const PropTypes = require('prop-types');
+const {atom} = require('derivable');
+const Immutable = require('immutable');
 
-import {shallowEqual, reactive, pure} from '../index';
+const {shallowEqual, reactive, pure} = require('../../');
 
 function markup(element) {
   return element.innerHTML.replace(/ data\-reactroot="[^"]*"/g, '');
