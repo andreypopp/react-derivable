@@ -5,7 +5,7 @@
 
 import invariant from 'invariant';
 import React from 'react';
-import {__Reactor as Reactor, captureDereferences, struct, isDerivable} from 'derivable';
+import {__Reactor as Reactor, __captureDereferences, struct, isDerivable} from 'derivable';
 
 /**
  * Reactor which wraps React component and schedules its update when
@@ -21,7 +21,7 @@ export class ReactUpdateReactor extends Reactor {
 
   setDependenciesFrom(thunk) {
     let result;
-    this.setDependencies(captureDereferences(() => (result = thunk())));
+    this.setDependencies(__captureDereferences(() => (result = thunk())));
     return result;
   }
 
