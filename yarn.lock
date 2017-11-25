@@ -1329,9 +1329,9 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
 
-derivable@2.0.0-beta.1:
-  version "2.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/derivable/-/derivable-2.0.0-beta.1.tgz#5eff69ff43affceeb4f4b852f8a689cac636299f"
+derivable@2.0.0-beta.2:
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/derivable/-/derivable-2.0.0-beta.2.tgz#030cfdf73701c5213e0a762aecaead63c076c571"
 
 detect-indent@^4.0.0:
   version "4.0.0"
