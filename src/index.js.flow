@@ -1,7 +1,0 @@
-/**
- * @copyright 2016-present, Andrey Popp <8mayday@gmail.com>
- * @flow
- */
-
-declare export function reactive<T: Function>(component: T): T;
-declare export function pure<T: Function>(component: T): T;
