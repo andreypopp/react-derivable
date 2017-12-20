@@ -13,9 +13,6 @@ build::
 benchmark: build
 	@node ./benchmark/index.js
 
-lint::
-	@$(BIN)/eslint src
-
 check::
 	@$(BIN)/flow --show-all-errors src
 
@@ -23,7 +20,7 @@ test::
 	@$(BIN)/jest
 
 test-flow::
-	@(cd test_flow/ && npm install && $(BIN)/flow check-contents < ./index.js)
+	@$(BIN)/flow check
 
 ci::
 	@$(BIN)/jest --watch
@@ -31,7 +28,7 @@ ci::
 doctoc:
 	@$(BIN)/doctoc --title '**Table of Contents**' ./README.md
 
-version-major version-minor version-patch:: lint test build
+version-major version-minor version-patch:: test build
 	@npm version $(@:version-%=%)
 
 publish::

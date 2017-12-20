@@ -1,15 +1,19 @@
-import {atom} from 'derivable';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {reactive, pure} from 'react-derivable';
+/**
+ * @flow
+ */
+
+import * as Derivable from 'derivable';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import {renderMap, render as r} from 'react-derivable';
 
 /**
  * State.
  */
 
-let state = atom({
+let state = Derivable.atom({
   a: 0,
-  b: 0
+  b: 0,
 });
 
 /**
@@ -26,42 +30,28 @@ let countB = state.derive(state => state.b);
  * Actions which operate on state.
  */
 
-let increaseA = () =>
-  state.swap(state => ({...state, a: state.a + 1}));
+let increaseA = () => state.update(state => ({...state, a: state.a + 1}));
 
-let decreaseA = () =>
-  state.swap(state => ({...state, a: state.a - 1}));
+let decreaseA = () => state.update(state => ({...state, a: state.a - 1}));
 
-let increaseB = () =>
-  state.swap(state => ({...state, b: state.b + 1}));
+let increaseB = () => state.update(state => ({...state, b: state.b + 1}));
 
-let decreaseB = () =>
-  state.swap(state => ({...state, b: state.b - 1}));
+let decreaseB = () => state.update(state => ({...state, b: state.b - 1}));
 
 /**
  * <App /> is a reactive component which distributes state among its children.
  */
 
-let App = reactive(props => {
+let App = props => {
   console.log(`render: <App />`);
   return (
     <div>
-      <pre>{JSON.stringify(state.get(), null, 2)}</pre>
-      <Counter
-        name="A"
-        counter={countA}
-        increase={increaseA}
-        decrease={decreaseA}
-        />
-      <Counter
-        name="B"
-        counter={countB}
-        increase={increaseB}
-        decrease={decreaseB}
-        />
+      <pre>{renderMap(state, state => JSON.stringify(state, null, 2))}</pre>
+      <Counter name="A" counter={countA} increase={increaseA} decrease={decreaseA} />
+      <Counter name="B" counter={countB} increase={increaseB} decrease={decreaseB} />
     </div>
   );
-});
+};
 
 /**
  * <Counter /> is a pure reactive component.
@@ -71,18 +61,18 @@ let App = reactive(props => {
  * prop value changes.
  */
 
-let Counter = pure(props => {
+let Counter = props => {
   console.log(`render: <Counter name="${props.name}" />`);
   return (
     <div>
       <div>
-        Value: {props.counter.get()}
+        Value: {r(props.counter)}
         <button onClick={props.increase}>+</button>
         <button onClick={props.decrease}>-</button>
       </div>
     </div>
   );
-});
+};
 
 /**
  * Render application into DOM.
@@ -91,7 +81,8 @@ let Counter = pure(props => {
 let render = () =>
   ReactDOM.render(
     <App />,
-    document.getElementById('root')
+    // $FlowFixMe: ...
+    document.getElementById('root'),
   );
 
 /**
@@ -100,6 +91,7 @@ let render = () =>
  * This helps webpack reload application when source code changes.
  */
 if (module.hot) {
+  // $FlowFixMe: ...
   module.hot.accept();
   render();
 }

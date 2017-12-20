@@ -1,32 +1,45 @@
+/**
+ * @flow
+ */
+
 import {atom} from 'derivable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {reactive} from 'react-derivable';
+import {renderMap, render as r} from 'react-derivable';
 
 /**
  * State.
  */
 
-let counter = atom(0);
+const state = atom({counter: 0});
+const counter = state.derive(state => {
+  console.log('computing...');
+  return state.counter;
+});
 
 /**
  * Actions which operate on state.
  */
 
-let increase = () =>
-  counter.swap(value => value + 1);
+const increase = () => {
+  state.update(state => ({...state, counter: state.counter + 1}));
+};
 
-let decrease = () =>
-  counter.swap(value => value - 1);
+let decrease = () => {
+  state.update(state => ({...state, counter: state.counter - 1}));
+};
 
 /**
  * Reactive component which reads from state and modifies it via actions.
  */
 
-let App = reactive(props =>
+let App = () => (
   <div>
     <div>
-      Value: {counter.get()}
+      <div>Value: {r(counter)}</div>
+      <div>
+        Is Even: {renderMap(counter, counter => (counter % 2 === 0 ? 'Yes' : 'No'))}
+      </div>
       <button onClick={increase}>+</button>
       <button onClick={decrease}>-</button>
     </div>
@@ -40,7 +53,8 @@ let App = reactive(props =>
 let render = () =>
   ReactDOM.render(
     <App />,
-    document.getElementById('root')
+    // $FlowFixMe: ...
+    document.getElementById('root'),
   );
 
 /**
@@ -49,6 +63,7 @@ let render = () =>
  * This helps webpack reload application when source code changes.
  */
 if (module.hot) {
+  // $FlowFixMe: ...
   module.hot.accept();
   render();
 }
