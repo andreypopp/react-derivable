@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render 1`] = `
+<div>
+  The answer is 
+  42
+</div>
+`;
+
+exports[`render 2`] = `
+<div>
+  The answer is 
+  0
+</div>
+`;
+
+exports[`renderMap 1`] = `
+<div>
+  The answer is 
+  <span>
+    42
+  </span>
+</div>
+`;
+
+exports[`renderMap 2`] = `
+<div>
+  The answer is 
+  <span>
+    0
+  </span>
+</div>
+`;
+
+exports[`the number of derivation computations 1`] = `
+<div>
+  The answer is 
+  43
+</div>
+`;
+
+exports[`the number of derivation computations 2`] = `
+<div>
+  The answer is 
+  1
+</div>
+`;

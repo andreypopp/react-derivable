@@ -1,4 +1,6 @@
 /**
+ * @copyright 2017-present, Andrey Popp
+ *
  * @flow
  */
 
