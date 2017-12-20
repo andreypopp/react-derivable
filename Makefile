@@ -23,7 +23,7 @@ test::
 	@$(BIN)/jest
 
 test-flow::
-	@(cd test_flow/ && npm install && $(BIN)/flow check-contents < ./index.js)
+	@$(BIN)/flow check
 
 ci::
 	@$(BIN)/jest --watch
