@@ -32,6 +32,8 @@ exports[`renderMap 2`] = `
 </div>
 `;
 
+exports[`rendering to string 1`] = `"<div data-reactroot=\\"\\">The answer is <!-- -->42</div>"`;
+
 exports[`the number of derivation computations 1`] = `
 <div>
   The answer is 

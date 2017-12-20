@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOMServer from 'react-dom/server';
 import * as Derivable from 'derivable';
 import {render as r, renderMap} from '../index';
 import TestRenderer from 'react-test-renderer';
@@ -64,4 +64,14 @@ test('the number of derivation computations', function() {
 
   answer.set(1);
   expect(effects).toEqual(['answerPlusOne', 'answerPlusOne']);
+});
+
+test('rendering to string', function() {
+  const answer = Derivable.atom(42);
+
+  function Component() {
+    return <div>The answer is {r(answer)}</div>;
+  }
+
+  expect(ReactDOMServer.renderToString(<Component />)).toMatchSnapshot();
 });
